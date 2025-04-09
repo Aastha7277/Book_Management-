@@ -5,7 +5,10 @@ const { ApiError } = require('../../utils/error/ApiError');
 
 const updateBook = async (req, res, next) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
+        if(!id) {
+            return next(new ApiError(status.BAD_REQUEST, "Book ID is required"));
+        }
         const existingBook = await prisma.book.findUnique({ where: { id } });
 
         if (!existingBook) {
@@ -19,6 +22,7 @@ const updateBook = async (req, res, next) => {
 
         res.status(status.OK).json(updatedBook);
     } catch (err) {
+        console.log(err.message || err.data);
         next(new ApiError(status.INTERNAL_SERVER_ERROR, "Error updating book", err.message));
     }
 };

@@ -1,7 +1,7 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
-const ApiError = require('../../utils/error/ApiError');
-const status = require('http-status');
+const { ApiError } = require('../../utils/error/ApiError');
+const { status } = require('http-status');
 
 const getBookById = async (req, res, next) => {
     try {

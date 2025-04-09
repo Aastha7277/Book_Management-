@@ -1,11 +1,11 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 const { ApiError } = require('../../utils/error/ApiError');
-const status = require('http-status');
+const { status } = require('http-status');
 
 const deleteBook = async (req, res, next) => {
     try {
-        const id = parseInt(req.params.id);
+        const id = req.params.id;
         const book = await prisma.book.findUnique({ where: { id } });
 
         if (!book) {
@@ -13,8 +13,9 @@ const deleteBook = async (req, res, next) => {
         }
 
         await prisma.book.delete({ where: { id } });
-        res.status(status.OK).json({ message: "Book deleted successfully" });
+        res.status(status.OK).json({ message: "Book deleted successfully", book });
     } catch (err) {
+        console.log(err.message || err.data);
         next(new ApiError(status.INTERNAL_SERVER_ERROR, "Error deleting book", err.message));
     }
 };
