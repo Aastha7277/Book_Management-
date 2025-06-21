@@ -9,6 +9,9 @@ const { status } = require('http-status');
 //@description     Login a User
 //@route           POST /api/auth/login
 //@access          Registered User
+
+
+
 const login = async (req, res, next) => {
 
     const { email, password } = req.body;
